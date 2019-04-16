@@ -25,5 +25,11 @@ func main() {
         logger.Info("Command: ", cmd.Name)
     }
 
+    logger.Info("Executing command")
+    err = lib.ExecuteCommand(cmd)
+    if err != nil {
+        logger.Error(err)
+    }
+
     logger.Info("Exiting")
 }
