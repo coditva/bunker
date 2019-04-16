@@ -1,5 +1,6 @@
 package lib
 
+import "fmt"
 import "errors"
 import "./types"
 
@@ -18,7 +19,7 @@ func ParseArgs(args []string) (types.Command, error) {
         command = types.CommandPush
     } else {
         command = types.CommandUnknown
-        err = errors.New("Command unknown")
+        err = errors.New(fmt.Sprintf("Unknown command: %v", args[1]))
     }
 
     return types.Command{Name: command}, err
