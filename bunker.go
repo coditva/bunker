@@ -1,19 +1,29 @@
 package main
 
-import "fmt"
 import (
     "github.com/google/logger"
+    "./internal"
     "os"
 )
 
 func main() {
-    var logger_out = os.Stdout
-    defer logger.Init("defaultLogger", false, true, logger_out).Close()
+    logPath := "/tmp/bunker.log"
+    loggerOut, err := os.OpenFile(logPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
+    if err != nil {
+        logger.Fatalf("Failed to open logfile")
+    }
+    defer logger.Init("defaultLogger", false, true, loggerOut).Close()
 
-    fmt.Printf("CLI for the bunker\n")
+    logger.Info("Starting application")
 
-    logger.Info("Info")
-    logger.Warning("Warning")
-    logger.Error("Error")
-    logger.Fatal("Fatal")
+    logger.Info("Parsing command line arguments")
+    cmd, err := lib.ParseArgs(os.Args)
+    if err != nil {
+        lib.PrintHelp(err)
+        os.Exit(1)
+    } else {
+        logger.Info("Command: ", cmd.Name)
+    }
+
+    logger.Info("Exiting")
 }
