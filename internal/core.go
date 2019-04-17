@@ -1,6 +1,6 @@
 package lib
 
-import "./types"
+import "github.com/coditva/bunker/internal/types"
 
 func ExecuteCommand(command types.Command) error {
 

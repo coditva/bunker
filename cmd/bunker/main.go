@@ -2,7 +2,7 @@ package main
 
 import (
     "github.com/google/logger"
-    "./internal"
+    "github.com/coditva/bunker/internal"
     "os"
 )
 

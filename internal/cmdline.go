@@ -2,7 +2,7 @@ package lib
 
 import "fmt"
 import "errors"
-import "./types"
+import "github.com/coditva/bunker/internal/types"
 
 func ParseArgs(args []string) (types.Command, error) {
     var command types.CommandName

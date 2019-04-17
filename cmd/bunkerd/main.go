@@ -1,4 +1,4 @@
-package main
+package bunkerd
 
 import "fmt"
 import (

@@ -1,4 +1,4 @@
 #!/bin/sh
 
 mkdir -p build/
-go build -o build/"$TARGET" "$TARGET.go"
+go build -o build/"$TARGET" "cmd/$TARGET/main.go"
