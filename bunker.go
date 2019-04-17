@@ -25,6 +25,8 @@ func main() {
         logger.Info("Command: ", cmd.Name)
     }
 
+    lib.ClientNew()
+
     logger.Info("Executing command")
     err = lib.ExecuteCommand(cmd)
     if err != nil {
