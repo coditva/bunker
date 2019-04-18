@@ -1,4 +1,4 @@
-package bunkerd
+package main
 
 import "fmt"
 import (
@@ -6,6 +6,7 @@ import (
     "os/exec"
     "syscall"
 )
+import "github.com/coditva/bunker/internal"
 
 var helpText =
 `Usage:
@@ -22,7 +23,7 @@ func start() error {
         fmt.Println("Could not find containerd")
         os.Exit(1)
     }
-    args := []string{"containerd", "--address", "/run/bunker/bunkerd.sock",
+    args := []string{"containerd", "--address", lib.ContainerdSocketPath,
             "--log-level", "fatal"}
     env := os.Environ()
 
