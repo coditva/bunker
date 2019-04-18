@@ -6,29 +6,42 @@ import (
     "os/exec"
     "syscall"
 )
-import "github.com/coditva/bunker/internal"
+import (
+    lib "github.com/coditva/bunker/internal"
+    rpc "github.com/coditva/bunker/internal/rpc"
+    api "github.com/coditva/bunker/internal/api"
+)
 
 var helpText =
 "Usage: bunkerd start | stop | restart | enable | disable | status\n"
 
 func start() error {
-    binary, lookErr := exec.LookPath("containerd")
-    if lookErr != nil {
+    binary, err := exec.LookPath("containerd")
+    if err != nil {
         fmt.Println("Could not find containerd")
         os.Exit(1)
     }
     args := []string{"containerd", "--address", lib.ContainerdSocketPath,
             "--log-level", "fatal"}
     env := os.Environ()
-
     procAttr := syscall.ProcAttr{
         Dir: "/tmp",
         Env: env,
     }
 
-    pid, err := syscall.ForkExec(binary, args, &procAttr)
-    fmt.Println("Daemon Process: ", pid)
-    return err
+    if pid, err := syscall.ForkExec(binary, args, &procAttr); err != nil {
+        return err
+    } else {
+        fmt.Println("Daemon Process: ", pid)
+    }
+
+    server := rpc.NewServer("/tmp/rpc.sock")
+    if err := server.Serve(api.New()); err != nil {
+        return err
+    }
+    defer server.Close()
+
+    return nil
 }
 
 func stop() error {
