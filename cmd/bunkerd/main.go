@@ -9,13 +9,7 @@ import (
 import "github.com/coditva/bunker/internal"
 
 var helpText =
-`Usage:
-start
-stop
-restart
-enable
-disable
-`
+"Usage: bunkerd start | stop | restart | enable | disable | status\n"
 
 func start() error {
     binary, lookErr := exec.LookPath("containerd")
@@ -49,6 +43,10 @@ func disable() error {
     return nil
 }
 
+func status() error {
+    return nil
+}
+
 func printHelp() {
     fmt.Printf(helpText)
 }
@@ -68,6 +66,8 @@ func main() {
     } else if os.Args[1] == "restart" {
         stop()
         start()
+    } else if os.Args[1] == "status" {
+        status()
     } else {
         printHelp()
         os.Exit(1)
