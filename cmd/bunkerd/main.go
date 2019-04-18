@@ -35,8 +35,8 @@ func start() error {
         fmt.Println("Daemon Process: ", pid)
     }
 
-    server := rpc.NewServer("/tmp/rpc.sock")
-    if err := server.Serve(api.New()); err != nil {
+    server := rpc.NewServer(lib.RPCSocketPath)
+    if err := server.Serve(new(api.Api)); err != nil {
         return err
     }
     defer server.Close()

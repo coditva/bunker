@@ -5,22 +5,22 @@ import (
     "net"
     "net/rpc"
     "net/http"
-
-    api "github.com/coditva/bunker/internal/api"
 )
 
 
 type Server struct {
-    sockAddr string
+    sockAddr    string
+    sock        net.Listener
 }
 
 func NewServer(sockAddr string) *Server {
     return &Server{
-        sockAddr: sockAddr,
+        sockAddr:   sockAddr,
+        sock:       nil,
     }
 }
 
-func (server Server) Serve(api *api.Api) error {
+func (server *Server) Serve(api interface{}) error {
     if err := os.RemoveAll(server.sockAddr); err != nil {
         return err
     }
@@ -28,15 +28,16 @@ func (server Server) Serve(api *api.Api) error {
     rpc.Register(api)
     rpc.HandleHTTP()
 
-    sock, err := net.Listen("unix", server.sockAddr)
+    var err error
+    server.sock, err = net.Listen("unix", server.sockAddr)
     if err != nil {
         return err
     }
-    http.Serve(sock, nil)
+    http.Serve(server.sock, nil)
     return nil
 }
 
-func (server Server) Close() error {
-    server.Close()
+func (server *Server) Close() error {
+    server.sock.Close()
     return nil
 }
