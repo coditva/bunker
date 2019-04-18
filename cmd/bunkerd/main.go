@@ -16,9 +16,11 @@ var helpText =
 "Usage: bunkerd start | stop | restart | enable | disable | status\n"
 
 func start() error {
+    lib.Logger.Info("Starting bunkerd")
+
     binary, err := exec.LookPath("containerd")
     if err != nil {
-        fmt.Println("Could not find containerd")
+        lib.Logger.Error("Could not find containerd")
         os.Exit(1)
     }
     args := []string{"containerd", "--address", lib.ContainerdSocketPath,
@@ -32,7 +34,7 @@ func start() error {
     if pid, err := syscall.ForkExec(binary, args, &procAttr); err != nil {
         return err
     } else {
-        fmt.Println("Daemon Process: ", pid)
+        lib.Logger.Info("Started containerd daemon PID: ", pid)
     }
 
     server := rpc.NewServer(lib.RPCSocketPath)
@@ -65,6 +67,11 @@ func printHelp() {
 }
 
 func main() {
+    lib.InitLogger("bunker", "/tmp/bunkerd.log")
+
+    lib.Logger.Info("Starting daemon")
+
+    lib.Logger.Info("Parsing arguments")
     if len(os.Args) < 2 {
         printHelp()
         os.Exit(1)

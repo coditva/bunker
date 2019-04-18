@@ -1,37 +1,32 @@
 package main
 
 import (
-    "github.com/google/logger"
-    "github.com/coditva/bunker/internal"
     "os"
+
+    "github.com/coditva/bunker/internal"
 )
 
 func main() {
-    logPath := "/tmp/bunker.log"
-    loggerOut, err := os.OpenFile(logPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
-    if err != nil {
-        logger.Fatalf("Failed to open logfile")
-    }
-    defer logger.Init("defaultLogger", false, true, loggerOut).Close()
+    lib.InitLogger("bunker", "/tmp/bunker.log")
 
-    logger.Info("Starting application")
+    lib.Logger.Info("Starting application")
 
-    logger.Info("Parsing command line arguments")
+    lib.Logger.Info("Parsing command line arguments")
     cmd, err := lib.ParseArgs(os.Args)
     if err != nil {
         lib.PrintHelp(err)
         os.Exit(1)
     } else {
-        logger.Info("Command: ", cmd.Name)
+        lib.Logger.Info("Command: ", cmd.Name)
     }
 
     lib.ClientNew()
 
-    logger.Info("Executing command")
+    lib.Logger.Info("Executing command")
     err = lib.ExecuteCommand(cmd)
     if err != nil {
-        logger.Error(err)
+        lib.Logger.Error(err)
     }
 
-    logger.Info("Exiting")
+    lib.Logger.Info("Exiting")
 }
