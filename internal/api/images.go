@@ -15,7 +15,13 @@ func (api Api) Images(args *types.Args, reply *string) error {
     }
 
     for _, image := range images{
-        *reply = fmt.Sprintf("%v%v\n", *reply, image.Name())
+        name := image.Name()
+        size, err := image.Size(lib.ContainerdClient.Ns)
+        if err != nil {
+            lib.Logger.Warning("Unknown size for image ", name, ": ", err)
+            size = 0
+        }
+        *reply = fmt.Sprintf("%v%v\t%v\n", *reply, name, size)
     }
 
     return nil
