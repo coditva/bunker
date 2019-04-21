@@ -1,6 +1,8 @@
 package lib
 
 import (
+    "fmt"
+
     types "github.com/coditva/bunker/internal/types"
     rpc "github.com/coditva/bunker/internal/rpc"
 )
@@ -19,6 +21,7 @@ func ExecuteCommand(command types.Command) error {
         if err := client.Call("Api.Pull", command.Args, &reply); err != nil {
             return err
         }
+        fmt.Println(reply)
     }
     return nil
 }
