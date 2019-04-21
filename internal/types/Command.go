@@ -13,4 +13,5 @@ const (
 
 type Command struct {
     Name CommandName
+    Args Args
 }

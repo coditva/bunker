@@ -14,9 +14,9 @@ func ExecuteCommand(command types.Command) error {
         }
         defer client.Close()
 
-        var args types.Args
         var reply types.Reply
-        if err := client.Call("Api.Pull", &args, &reply); err != nil {
+        Logger.Info("Args: ", command.Args[0])
+        if err := client.Call("Api.Pull", command.Args, &reply); err != nil {
             return err
         }
     }

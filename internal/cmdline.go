@@ -6,6 +6,7 @@ import "github.com/coditva/bunker/internal/types"
 
 func ParseArgs(args []string) (types.Command, error) {
     var command types.CommandName
+    var commandArgs string
     var err error
 
     if len(args) < 2 {
@@ -15,6 +16,11 @@ func ParseArgs(args []string) (types.Command, error) {
         command = types.CommandBuild
     } else if args[1] == "pull" {
         command = types.CommandPull
+        if len(args) < 3 {
+            err = errors.New("Need image name to pull")
+        } else {
+            commandArgs = args[2]
+        }
     } else if args[1] == "push" {
         command = types.CommandPush
     } else {
@@ -22,5 +28,5 @@ func ParseArgs(args []string) (types.Command, error) {
         err = errors.New(fmt.Sprintf("Unknown command: %v", args[1]))
     }
 
-    return types.Command{Name: command}, err
+    return types.Command{Name: command, Args: []string{commandArgs}}, err
 }
