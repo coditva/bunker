@@ -9,6 +9,8 @@ import (
 )
 
 func main() {
+    var reply string
+
     lib.InitLogger("bunker", "/tmp/bunker.log")
 
     command, err := lib.ParseArgs(os.Args)
@@ -26,8 +28,7 @@ func main() {
     defer client.Close()
 
     lib.Logger.Info("Executing command: ", command.Name)
-    var reply string
-    if err := client.Call("Api.Pull", &command.Args, &reply); err != nil {
+    if err := client.Call(command.Method, &command.Args, &reply); err != nil {
         lib.Logger.Error(err)
         os.Exit(1)
     }

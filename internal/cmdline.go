@@ -7,31 +7,41 @@ import (
     types "github.com/coditva/bunker/internal/types"
 )
 
-func ParseArgs(args []string) (types.Command, error) {
-    var command types.CommandName
-    var commandArgs string
+func ParseArgs(args []string) (*types.Command, error) {
     var err error
+    var command *types.Command
 
     Logger.Info("Parsing command line arguments")
 
     if len(args) < 2 {
-        command = types.CommandEmpty
         err = errors.New("No command")
-    } else if args[1] == "build" {
-        command = types.CommandBuild
-    } else if args[1] == "pull" {
-        command = types.CommandPull
-        if len(args) < 3 {
-            err = errors.New("Need image name to pull")
-        } else {
-            commandArgs = args[2]
-        }
-    } else if args[1] == "push" {
-        command = types.CommandPush
-    } else {
-        command = types.CommandUnknown
-        err = errors.New(fmt.Sprintf("Unknown command: %v", args[1]))
+        return nil, err
     }
 
-    return types.Command{Name: command, Args: []string{commandArgs}}, err
+    command, err = NewCommand(args[1])
+    if err != nil {
+        return nil, err
+    }
+
+    for i := 2; i < len(args); i++ {
+        if args[i] != "" {
+            command.AddArg(args[i])
+        }
+    }
+
+    return command, nil
+}
+
+func NewCommand(name string) (*types.Command, error) {
+    command := new(types.Command)
+    command.ArgsLen = 0
+    command.Name = name
+
+    if name == "pull" {
+        command.Method = "Api.Pull"
+    } else {
+        return nil, errors.New(fmt.Sprintf("Unknown command %v", name))
+    }
+
+    return command, nil
 }
