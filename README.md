@@ -62,5 +62,10 @@ at present the following commands are implemented in `bunker`:
 - `pull`: Pull an image from the docker registry
 
 
+## Debugging
+The log files for the daemon and CLI found in `/tmp` as `/tmp/bunkerd.log` and
+`/tmp/bunker.log` respectively can be used to debug errors or track execution.
+
+
 ## License
 MIT (c) 2019-present Utkarsh Maheshwari <github.com/coditva>
