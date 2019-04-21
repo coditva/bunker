@@ -2,6 +2,7 @@ package main
 
 import (
     "os"
+    "fmt"
 
     lib "github.com/coditva/bunker/internal"
     rpc "github.com/coditva/bunker/internal/rpc"
@@ -20,6 +21,7 @@ func main() {
     client := rpc.NewClient(lib.RPCSocketPath)
     if err := client.Connect(); err != nil {
         lib.Logger.Error(err)
+        os.Exit(1)
     }
     defer client.Close()
 
@@ -27,7 +29,9 @@ func main() {
     var reply string
     if err := client.Call("Api.Pull", &command.Args, &reply); err != nil {
         lib.Logger.Error(err)
+        os.Exit(1)
     }
+    fmt.Println(reply)
 
     lib.Logger.Info("Exiting")
 }
