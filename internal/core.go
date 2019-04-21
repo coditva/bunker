@@ -14,7 +14,7 @@ func ExecuteCommand(command types.Command) error {
         }
         defer client.Close()
 
-        var reply types.Reply
+        var reply string
         Logger.Info("Args: ", command.Args[0])
         if err := client.Call("Api.Pull", command.Args, &reply); err != nil {
             return err
