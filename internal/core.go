@@ -7,7 +7,7 @@ import (
 
 func ExecuteCommand(command types.Command) error {
 
-    if command.Name == types.CommandPush {
+    if command.Name == types.CommandPull {
         client := rpc.NewClient(RPCSocketPath)
         if err := client.Connect(); err != nil {
             return err
@@ -16,7 +16,7 @@ func ExecuteCommand(command types.Command) error {
 
         var args types.Args
         var reply types.Reply
-        if err := client.Call("Api.Push", &args, &reply); err != nil {
+        if err := client.Call("Api.Pull", &args, &reply); err != nil {
             return err
         }
     }

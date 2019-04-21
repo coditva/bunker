@@ -37,6 +37,7 @@ func start() error {
         lib.Logger.Info("Started containerd daemon PID: ", pid)
     }
 
+    lib.InitContainerd()
     server := rpc.NewServer(lib.RPCSocketPath)
     if err := server.Serve(new(api.Api)); err != nil {
         return err
