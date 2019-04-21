@@ -60,6 +60,7 @@ The Bunker CLI is very similar to the most popular containerization engine
 Docker, but is more minimal than that. The project is in its early stages and
 at present the following commands are implemented in `bunker`:
 - `pull`: Pull an image from the docker registry
+- `images`: List images pulled from the registry
 
 
 ## Debugging
