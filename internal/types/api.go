@@ -1,5 +1,3 @@
 package types
 
-type Args []string
-type Reply string
-
+type Args [10]string
