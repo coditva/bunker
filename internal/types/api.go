@@ -1,3 +1,3 @@
 package types
 
-type Args []string
+type Args [10]string
