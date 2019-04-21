@@ -1,13 +1,18 @@
 package lib
 
-import "fmt"
-import "errors"
-import "github.com/coditva/bunker/internal/types"
+import (
+    "fmt"
+    "errors"
+
+    types "github.com/coditva/bunker/internal/types"
+)
 
 func ParseArgs(args []string) (types.Command, error) {
     var command types.CommandName
     var commandArgs string
     var err error
+
+    Logger.Info("Parsing command line arguments")
 
     if len(args) < 2 {
         command = types.CommandEmpty
