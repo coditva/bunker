@@ -1,6 +1,7 @@
 package api
 
 import (
+    "os"
     "fmt"
     "github.com/containerd/containerd"
     "github.com/containerd/containerd/oci"
@@ -42,7 +43,31 @@ func (api Api) Run(args *types.Args, reply *string) error {
         return nil
     }
 
-    task, err := container.NewTask(lib.ContainerdClient.Ns, cio.LogFile("/tmp/task.log"))
+    os.Mkdir(lib.ContainerStreamBasePath, 0660)
+
+    containerOut, err := os.OpenFile(fmt.Sprintf("%v%v.out", lib.ContainerStreamBasePath, id),
+            os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
+    if err != nil {
+        lib.Logger.Error(err)
+        return err
+    }
+
+    containerIn, err := os.OpenFile(fmt.Sprintf("%v%v.in", lib.ContainerStreamBasePath, id),
+            os.O_CREATE|os.O_RDONLY|os.O_APPEND, 0660)
+    if err != nil {
+        lib.Logger.Error(err)
+        return err
+    }
+
+    containerErr, err := os.OpenFile(fmt.Sprintf("%v%v.err", lib.ContainerStreamBasePath, id),
+            os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
+    if err != nil {
+        lib.Logger.Error(err)
+        return err
+    }
+
+    task, err := container.NewTask(lib.ContainerdClient.Ns,
+            cio.NewCreator(cio.WithStreams(containerIn, containerOut, containerErr)))
     if err != nil {
         *reply = "Could not create new task"
         lib.Logger.Error(err)
@@ -50,10 +75,10 @@ func (api Api) Run(args *types.Args, reply *string) error {
     defer task.Delete(lib.ContainerdClient.Ns)
     task.Start(lib.ContainerdClient.Ns)
 
-    *reply = fmt.Sprintf("Running command %v on image %v in container ID %v",
-            runCommand, imageName, container.ID())
+    lib.Logger.Info(fmt.Sprintf("Running command %v on image %v in container ID %v",
+            runCommand, imageName, container.ID()))
 
-    lib.Logger.Info(*reply)
+    *reply = fmt.Sprintf("%v", id)
 
     return nil
 }
