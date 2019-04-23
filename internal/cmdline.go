@@ -41,6 +41,8 @@ func NewCommand(name string) (*types.Command, error) {
         command.Method = "Api.Pull"
     } else if name == "images" {
         command.Method = "Api.Images"
+    } else if name == "run" {
+        command.Method = "Api.Run"
     } else {
         return nil, errors.New(fmt.Sprintf("Unknown command %v", name))
     }
