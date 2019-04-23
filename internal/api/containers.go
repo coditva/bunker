@@ -14,6 +14,7 @@ func (api Api) Containers(args *types.Args, reply *string) error {
         return err
     }
 
+    *reply = "Name\t\tImage\n--------------\t--------------"
     for _, container := range containers {
         imageName := "-"
 
@@ -24,7 +25,7 @@ func (api Api) Containers(args *types.Args, reply *string) error {
         }
         imageName = image.Name()
 
-        *reply = fmt.Sprintf("%v%v\t%v\n", *reply, name, imageName)
+        *reply = fmt.Sprintf("%v\n%v\t%v", *reply, name, imageName)
     }
 
     return nil
