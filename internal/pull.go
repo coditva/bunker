@@ -7,6 +7,12 @@ import (
 )
 
 func Pull(args *types.Args, reply *string) error {
+    containerd, err := NewContainerd()
+    if err != nil {
+        Logger.Error(err)
+        return err
+    }
+
     imageName := (*args)[0]
     if imageName == "" {
         *reply = "No image specified to pull from registry"
@@ -17,7 +23,7 @@ func Pull(args *types.Args, reply *string) error {
     retry := 2
     for retry > 0 {
         Logger.Info("Pulling image ", imageName)
-        image, err := ContainerdClient.Client.Pull(ContainerdClient.Ns, imageName)
+        image, err := containerd.Client.Pull(containerd.Context, imageName)
         if err != nil {
             Logger.Warning("Failed to pull image: ", err)
             imageName = fmt.Sprintf("docker.io/library/%v", imageName)

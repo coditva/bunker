@@ -7,8 +7,14 @@ import (
 )
 
 func Containers(args *types.Args, reply *string) error {
-    Logger.Info("Getting containers from containerd")
-    containers, err := ContainerdClient.Client.Containers(ContainerdClient.Ns, "")
+    containerd, err := NewContainerd()
+    if err != nil {
+        Logger.Error(err)
+        return err
+    }
+
+    Logger.Info("Getting list of containers")
+    containers, err := containerd.Client.Containers(containerd.Context, "")
     if err != nil {
         return err
     }
@@ -18,7 +24,7 @@ func Containers(args *types.Args, reply *string) error {
         imageName := "-"
 
         name := container.ID()
-        image, err := container.Image(ContainerdClient.Ns)
+        image, err := container.Image(containerd.Context)
         if err != nil {
             Logger.Warning("Unknown image for container ", name, ": ", err)
         }

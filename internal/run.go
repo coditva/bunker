@@ -3,7 +3,7 @@ package lib
 import (
     "os"
     "fmt"
-    "github.com/containerd/containerd"
+    containerdlib "github.com/containerd/containerd"
     "github.com/containerd/containerd/oci"
     "github.com/containerd/containerd/cio"
 
@@ -12,6 +12,12 @@ import (
 )
 
 func Run(args *types.Args, reply *string) error {
+    containerd, err := NewContainerd()
+    if err != nil {
+        Logger.Error(err)
+        return err
+    }
+
     imageName := (*args)[0]
     runCommand := (*args)[1]
 
@@ -27,16 +33,16 @@ func Run(args *types.Args, reply *string) error {
         return nil
     }
 
-    image, err := ContainerdClient.Client.Pull(ContainerdClient.Ns, imageName, containerd.WithPullUnpack)
+    image, err := containerd.Client.Pull(containerd.Context, imageName, containerdlib.WithPullUnpack)
     if err != nil {
         Logger.Error(err)
         return err
     }
 
     id := util.NewRandomName()
-    container, err := ContainerdClient.Client.NewContainer(ContainerdClient.Ns, id,
-            containerd.WithNewSnapshot(id, image),
-            containerd.WithNewSpec(oci.WithImageConfig(image)))
+    container, err := containerd.Client.NewContainer(containerd.Context, id,
+            containerdlib.WithNewSnapshot(id, image),
+            containerdlib.WithNewSpec(oci.WithImageConfig(image)))
     if err != nil {
         Logger.Error(err)
         return nil
@@ -65,14 +71,14 @@ func Run(args *types.Args, reply *string) error {
         return err
     }
 
-    task, err := container.NewTask(ContainerdClient.Ns,
+    task, err := container.NewTask(containerd.Context,
             cio.NewCreator(cio.WithStreams(containerIn, containerOut, containerErr)))
     if err != nil {
         *reply = "Could not create new task"
         Logger.Error(err)
     }
-    defer task.Delete(ContainerdClient.Ns)
-    task.Start(ContainerdClient.Ns)
+    defer task.Delete(containerd.Context)
+    task.Start(containerd.Context)
 
     Logger.Info(fmt.Sprintf("Running command %v on image %v in container ID %v",
             runCommand, imageName, container.ID()))

@@ -20,11 +20,6 @@ func (cli *CLI) Execute() error {
     var reply string
     InitLogger("bunker", "/tmp/bunker.log")
 
-    if err := InitContainerd(); err != nil {
-        Logger.Error(err)
-        return err
-    }
-
     command, err := cli.ParseArgs(os.Args)
     if err != nil {
         PrintHelp(err)
