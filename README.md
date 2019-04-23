@@ -1,9 +1,9 @@
-![Build Status](https://img.shields.io/travis/com/coditva/bunker.svg?logo=travis&style=for-the-badge)
-![Libraries.io dependency status](https://img.shields.io/librariesio/github/coditva/bunker.svg?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues/coditva/bunker.svg?logo=github&style=for-the-badge)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/coditva/bunker.svg?logo=github&style=for-the-badge)
+[![Build Status](https://img.shields.io/travis/com/coditva/bunker.svg?logo=travis&style=for-the-badge)](https://travis-ci.com/coditva/bunker)
+[![Libraries.io dependency status](https://img.shields.io/librariesio/github/coditva/bunker.svg?style=for-the-badge)](https://libraries.io/github/coditva/bunker)
+[![GitHub issues](https://img.shields.io/github/issues/coditva/bunker.svg?logo=github&style=for-the-badge)](https://github.com/coditva/bunker/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/coditva/bunker.svg?logo=github&style=for-the-badge)](https://github.com/coditva/bunker/pulls)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/coditva/bunker.svg?style=for-the-badge)
-![License](https://img.shields.io/github/license/coditva/bunker.svg?color=blue&style=for-the-badge)
+[![License](https://img.shields.io/github/license/coditva/bunker.svg?color=blue&style=for-the-badge)](https://github.com/coditva/bunker/blob/master/LICENSE)
 
 # Bunker
 _Proof-of-concept containerization engine_
