@@ -13,6 +13,7 @@ require (
 	github.com/docker/go-events v0.0.0-20170721190031-9461782956ad // indirect
 	github.com/gogo/googleapis v1.2.0 // indirect
 	github.com/google/logger v1.0.1
+	github.com/goombaio/namegenerator v0.0.0-20181006234301-989e774b106e
 	github.com/opencontainers/go-digest v1.0.0-rc1 // indirect
 	github.com/opencontainers/image-spec v1.0.1 // indirect
 	github.com/opencontainers/runc v0.1.1 // indirect
