@@ -3,7 +3,6 @@ package lib
 import (
     "fmt"
 
-    util "github.com/coditva/bunker/internal/util"
     types "github.com/coditva/bunker/internal/types"
 )
 
@@ -28,7 +27,7 @@ func Images(args *types.Args, reply *string) error {
             Logger.Warning("Unknown size for image ", name, ": ", err)
             size = 0
         }
-        *reply = fmt.Sprintf("%v\n%v\t%v", *reply, util.SizeToString(size), name)
+        *reply = fmt.Sprintf("%v\n%v\t%v", *reply, Util.ByteToString(size), name)
     }
 
     return nil

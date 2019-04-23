@@ -1,4 +1,4 @@
-package util
+package lib
 
 import(
     "fmt"
@@ -6,12 +6,17 @@ import(
     "github.com/goombaio/namegenerator"
 )
 
-func NewRandomName() string {
+type util struct {
+}
+
+var Util util
+
+func (u util) NewRandomName() string {
     seed := time.Now().UTC().UnixNano()
     return namegenerator.NewNameGenerator(seed).Generate()
 }
 
-func SizeToString(size int64) string {
+func (u util) ByteToString(size int64) string {
     unit := []string{"", "B", "KB", "MB", "GB", "TB"}
 
     scale := 0

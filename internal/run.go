@@ -7,7 +7,6 @@ import (
     "github.com/containerd/containerd/oci"
     "github.com/containerd/containerd/cio"
 
-    util "github.com/coditva/bunker/internal/util"
     types "github.com/coditva/bunker/internal/types"
 )
 
@@ -39,7 +38,7 @@ func Run(args *types.Args, reply *string) error {
         return err
     }
 
-    id := util.NewRandomName()
+    id := Util.NewRandomName()
     container, err := containerd.Client.NewContainer(containerd.Context, id,
             containerdlib.WithNewSnapshot(id, image),
             containerdlib.WithNewSpec(oci.WithImageConfig(image)))
