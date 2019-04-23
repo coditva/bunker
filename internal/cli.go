@@ -8,24 +8,28 @@ import (
     types "github.com/coditva/bunker/internal/types"
 )
 
-func InitCLI() error {
+type CLI struct {
+}
+
+func NewCLI() *CLI {
+    return &CLI{}
+}
+
+
+func (cli *CLI) Execute() error {
+    var reply string
     InitLogger("bunker", "/tmp/bunker.log")
 
     if err := InitContainerd(); err != nil {
+        Logger.Error(err)
         return err
     }
-    return nil
-}
 
-func ExecuteCLI() error {
-    var reply string
-
-    command, err := ParseArgs(os.Args)
+    command, err := cli.ParseArgs(os.Args)
     if err != nil {
         PrintHelp(err)
         os.Exit(1)
     }
-
 
     if err := command.Method(&command.Args, &reply); err != nil {
         Logger.Error(err)
@@ -37,7 +41,7 @@ func ExecuteCLI() error {
 }
 
 
-func ParseArgs(args []string) (*types.Command, error) {
+func (cli *CLI) ParseArgs(args []string) (*types.Command, error) {
     var err error
     var command *types.Command
 

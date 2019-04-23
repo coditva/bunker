@@ -5,6 +5,5 @@ import (
 )
 
 func main() {
-    lib.InitCLI()
-    lib.ExecuteCLI()
+    lib.NewCLI().Execute()
 }
