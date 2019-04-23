@@ -4,6 +4,7 @@ import (
     "fmt"
     "github.com/containerd/containerd"
     "github.com/containerd/containerd/oci"
+    "github.com/containerd/containerd/cio"
 
     lib "github.com/coditva/bunker/internal"
     util "github.com/coditva/bunker/internal/util"
@@ -40,6 +41,15 @@ func (api Api) Run(args *types.Args, reply *string) error {
         lib.Logger.Error(err)
         return nil
     }
+
+    task, err := container.NewTask(lib.ContainerdClient.Ns, cio.LogFile("/tmp/task.log"))
+    if err != nil {
+        *reply = "Could not create new task"
+        lib.Logger.Error(err)
+    }
+    defer task.Delete(lib.ContainerdClient.Ns)
+    task.Start(lib.ContainerdClient.Ns)
+
     *reply = fmt.Sprintf("Running command %v on image %v in container ID %v",
             runCommand, imageName, container.ID())
 
