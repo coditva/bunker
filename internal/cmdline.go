@@ -43,6 +43,8 @@ func NewCommand(name string) (*types.Command, error) {
         command.Method = "Api.Images"
     } else if name == "run" {
         command.Method = "Api.Run"
+    } else if name == "containers" {
+        command.Method = "Api.Containers"
     } else {
         return nil, errors.New(fmt.Sprintf("Unknown command %v", name))
     }
