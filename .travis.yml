@@ -3,3 +3,8 @@ language: go
 go:
     - "1.12"
     - "master"
+
+install:
+    - make
+script:
+    - make test
