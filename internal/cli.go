@@ -1,11 +1,41 @@
 package lib
 
 import (
+    "os"
     "fmt"
     "errors"
 
     types "github.com/coditva/bunker/internal/types"
 )
+
+func InitCLI() error {
+    InitLogger("bunker", "/tmp/bunker.log")
+
+    if err := InitContainerd(); err != nil {
+        return err
+    }
+    return nil
+}
+
+func ExecuteCLI() error {
+    var reply string
+
+    command, err := ParseArgs(os.Args)
+    if err != nil {
+        PrintHelp(err)
+        os.Exit(1)
+    }
+
+
+    if err := command.Method(&command.Args, &reply); err != nil {
+        Logger.Error(err)
+        os.Exit(1)
+    }
+    fmt.Println(reply)
+
+    return nil
+}
+
 
 func ParseArgs(args []string) (*types.Command, error) {
     var err error
@@ -38,13 +68,13 @@ func NewCommand(name string) (*types.Command, error) {
     command.Name = name
 
     if name == "pull" {
-        command.Method = "Api.Pull"
+        command.Method = Pull
     } else if name == "images" {
-        command.Method = "Api.Images"
+        command.Method = Images
     } else if name == "run" {
-        command.Method = "Api.Run"
+        command.Method = Run
     } else if name == "containers" {
-        command.Method = "Api.Containers"
+        command.Method = Containers
     } else {
         return nil, errors.New(fmt.Sprintf("Unknown command %v", name))
     }

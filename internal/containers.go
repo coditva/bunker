@@ -1,15 +1,14 @@
-package api
+package lib
 
 import (
     "fmt"
 
-    lib "github.com/coditva/bunker/internal"
     types "github.com/coditva/bunker/internal/types"
 )
 
-func (api Api) Containers(args *types.Args, reply *string) error {
-    lib.Logger.Info("Getting containers from containerd")
-    containers, err := lib.ContainerdClient.Client.Containers(lib.ContainerdClient.Ns, "")
+func Containers(args *types.Args, reply *string) error {
+    Logger.Info("Getting containers from containerd")
+    containers, err := ContainerdClient.Client.Containers(ContainerdClient.Ns, "")
     if err != nil {
         return err
     }
@@ -19,9 +18,9 @@ func (api Api) Containers(args *types.Args, reply *string) error {
         imageName := "-"
 
         name := container.ID()
-        image, err := container.Image(lib.ContainerdClient.Ns)
+        image, err := container.Image(ContainerdClient.Ns)
         if err != nil {
-            lib.Logger.Warning("Unknown image for container ", name, ": ", err)
+            Logger.Warning("Unknown image for container ", name, ": ", err)
         }
         imageName = image.Name()
 

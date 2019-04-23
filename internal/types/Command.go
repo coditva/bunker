@@ -12,7 +12,7 @@ type Streams struct {
 
 type Command struct {
     Name    string
-    Method  string
+    Method  ApiMethod
     Args    Args
     ArgsLen int
     Streams  Streams
@@ -22,3 +22,6 @@ func (command *Command) AddArg(arg string) {
     command.Args[command.ArgsLen] = arg
     command.ArgsLen += 1
 }
+
+
+

@@ -8,8 +8,6 @@ import (
 )
 import (
     lib "github.com/coditva/bunker/internal"
-    rpc "github.com/coditva/bunker/internal/rpc"
-    api "github.com/coditva/bunker/internal/api"
 )
 
 var helpText =
@@ -36,13 +34,6 @@ func start() error {
     } else {
         lib.Logger.Info("Started containerd daemon PID: ", pid)
     }
-
-    lib.InitContainerd()
-    server := rpc.NewServer(lib.RPCSocketPath)
-    if err := server.Serve(new(api.Api)); err != nil {
-        return err
-    }
-    defer server.Close()
 
     return nil
 }
