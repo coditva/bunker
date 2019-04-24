@@ -3,6 +3,7 @@ package bunker
 import(
     "fmt"
     "time"
+    "regexp"
     "github.com/goombaio/namegenerator"
 )
 
@@ -43,6 +44,15 @@ func (u util) ByteToString(size int64) string {
 // ImageNameToRegistryURL converts the name of an image into the URL for the
 // docker registry which can be used to pull a container image.
 func (u util) ImageNameToRegistryURL(name string) string {
-    // TODO
+    var taggedRegex = regexp.MustCompile(`[a-z/.]*:[a-z]*`)
+    if taggedRegex.MatchString(name) == false {
+        name = fmt.Sprintf("%v:latest", name)
+    }
+
+    var fullURLRegex = regexp.MustCompile(`docker.io/library/[a-z/.:]*`)
+    if fullURLRegex.MatchString(name) == false {
+        name = fmt.Sprintf("docker.io/library/%v", name)
+    }
+
     return name
 }
