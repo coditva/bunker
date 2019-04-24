@@ -8,7 +8,7 @@
 [![License](https://img.shields.io/github/license/coditva/bunker.svg?color=blue&style=for-the-badge)](https://github.com/coditva/bunker/blob/master/LICENSE)
 
 # Bunker
-_Proof-of-concept containerization engine_
+_Small clone of the Docker containerization engine_
 
 
 ## About
