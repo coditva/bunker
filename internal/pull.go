@@ -1,6 +1,7 @@
 package bunker
 
 import (
+    "fmt"
     "errors"
 )
 
@@ -40,7 +41,12 @@ func (cmd *Pull) Execute() error {
         Logger.Warning(err)
         return err
     }
+    fmt.Println("Pulling image", cmd.args.Value("image"))
     imageName := Util.ImageNameToRegistryURL(cmd.args.Value("image"))
+
+    if imageName != cmd.args.Value("image") {
+        fmt.Println("Expanding image name to", imageName)
+    }
 
     containerd, err := NewContainerd()
     if err != nil {
@@ -53,6 +59,8 @@ func (cmd *Pull) Execute() error {
         Logger.Warning(err)
         return err
     }
+
+    fmt.Println("Successfully pulled image", image.Name())
     Logger.Info("Pulled image ", image.Name())
     return nil
 }
