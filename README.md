@@ -79,3 +79,6 @@ The log files for the daemon and CLI found in `/tmp` as `/tmp/bunkerd.log` and
 
 ## License
 MIT (c) 2019-present Utkarsh Maheshwari <github.com/coditva>
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcoditva%2Fbunker.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcoditva%2Fbunker?ref=badge_large)
