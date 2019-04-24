@@ -54,6 +54,13 @@ func (cli *CLI) Execute() error {
             return nil
         }
 
+    case "image":
+        if command, err = NewImageCommand(&os.Args); err != nil {
+            Logger.Info(err)
+            fmt.Println(err)
+            return nil
+        }
+
     case "images":
         if command, err = NewImagesCommand(&os.Args); err != nil {
             Logger.Info(err)

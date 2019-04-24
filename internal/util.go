@@ -46,3 +46,12 @@ func (u util) ImageNameToRegistryURL(name string) string {
     // TODO
     return name
 }
+
+// GetArrayValueAtIndex returns the value of array at index if it exists and an
+// empty string otherwise.
+func (u util) ArrayValueAtIndex(array *[]string, index int) string {
+    if len (*array) > index && index > 0 {
+        return (*array)[index]
+    }
+    return ""
+}
