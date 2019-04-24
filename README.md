@@ -6,6 +6,7 @@
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/coditva/bunker.svg?logo=github&style=for-the-badge)](https://github.com/coditva/bunker/pulls)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/coditva/bunker.svg?style=for-the-badge)
 [![License](https://img.shields.io/github/license/coditva/bunker.svg?color=blue&style=for-the-badge)](https://github.com/coditva/bunker/blob/master/LICENSE)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcoditva%2Fbunker.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcoditva%2Fbunker?ref=badge_shield)
 
 # Bunker
 _Proof-of-concept containerization engine_
@@ -79,3 +80,6 @@ The log files for the daemon and CLI found in `/tmp` as `/tmp/bunkerd.log` and
 
 ## License
 MIT (c) 2019-present Utkarsh Maheshwari <github.com/coditva>
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcoditva%2Fbunker.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcoditva%2Fbunker?ref=badge_large)
