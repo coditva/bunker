@@ -1,7 +1,6 @@
 package lib
 
 import (
-    "fmt"
     "context"
 
     "github.com/containerd/containerd"
@@ -11,27 +10,22 @@ import (
 type Containerd struct {
     Client  *containerd.Client
     Context context.Context
-    Ns      context.Context
 }
 
-var ContainerdClient *Containerd
+func NewContainerd() (*Containerd, error) {
+    client := new(Containerd)
 
-
-func InitContainerd() error {
-    ContainerdClient = new(Containerd)
-    var err error
-
-    Logger.Info("Creating new client")
-    ContainerdClient.Client, err = containerd.New(ContainerdSocketPath)
-    if err != nil {
-        fmt.Println(err)
-        fmt.Println("Could not connect to containerd")
-        return err
+    Logger.Info("Connecting to containerd")
+    if c, err := containerd.New(ContainerdSocketPath); err != nil {
+        Logger.Error(err)
+        return nil, err
+    } else {
+        Logger.Info("Connected to containerd as client")
+        client.Client = c
     }
     //defer ContainerdClient.Client.Close()
 
-    Logger.Info("Creating new containerd client context")
-    ContainerdClient.Context = context.Background()
-    ContainerdClient.Ns = namespaces.WithNamespace(ContainerdClient.Context, "bunker")
-    return nil
+    Logger.Info("Creating containerd client context")
+    client.Context = namespaces.WithNamespace(context.Background(), "bunker")
+    return client, nil
 }

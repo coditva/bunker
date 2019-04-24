@@ -14,15 +14,15 @@ _Proof-of-concept containerization engine_
 The project is divided into two binaries:
 
 ### `bunkerd`
-This is the daemon which runs in the background with
-[containerd](https://github.com/containerd/containerd) as it's back-end. It
-exposes an API accessible via RPC over the socket mentioned in the
-`internal/config.go` file. The API could be found in the `internal/api/` folder.
-It is similar to the Docker API but is more minimal.
+This is the daemon which controls the
+[containerd](https://github.com/containerd/containerd) running in the background
+as the back-end. It exposes an API accessible via containerd client over the
+socket mentioned in the `internal/config.go` file. The API could be found in the
+`internal/` folder.  It is similar to the Docker API but is more minimal.
 
 ### `bunker`
 This is the CLI for the bunker daemon. It parses user commands and sends them to
-the bunkerd daemon over RPC.
+the containerd daemon.
 
 
 ## Building the project
