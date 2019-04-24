@@ -2,24 +2,46 @@ package lib
 
 import (
     "fmt"
-
-    types "github.com/coditva/bunker/internal/types"
+    "errors"
 )
 
-func Images(args *types.Args, reply *string) error {
+type Images struct {
+    args    *Args
+}
+
+func NewImagesCommand(rawArgs *[]string) (*Images, error) {
+    args := make(Args)
+    if len(*rawArgs) > 1 {
+        args["command"] = (*rawArgs)[1]
+    } else {
+        return nil, errors.New("run: No enough arguments")
+    }
+    return &Images{ args: &args }, nil
+}
+
+func (cmd *Images) Name() string {
+    return "images"
+}
+
+func (cmd *Images) Help() string {
+    return "images"
+}
+
+
+func (cmd *Images) Execute() error {
     containerd, err := NewContainerd()
     if err != nil {
         Logger.Error(err)
         return err
     }
 
-    Logger.Info("Getting images from containerd")
+    Logger.Info("Getting list of images from containerd")
     images, err := containerd.Client.ListImages(containerd.Context, "")
     if err != nil {
         return err
     }
 
-    *reply = "Size\tImage\n------\t--------------"
+    fmt.Println("Size\tImage\n------\t--------------")
     for _, image := range images{
         name := image.Name()
         size, err := image.Size(containerd.Context)
@@ -27,7 +49,7 @@ func Images(args *types.Args, reply *string) error {
             Logger.Warning("Unknown size for image ", name, ": ", err)
             size = 0
         }
-        *reply = fmt.Sprintf("%v\n%v\t%v", *reply, Util.ByteToString(size), name)
+        fmt.Printf("%v\t%v\n", Util.ByteToString(size), name)
     }
 
     return nil

@@ -34,3 +34,8 @@ func (u util) ByteToString(size int64) string {
 
     return fmt.Sprintf("%v%v", res, unit[scale])
 }
+
+func (u util) ImageNameToRegistryURL(name string) string {
+    // TODO
+    return name
+}

@@ -3,38 +3,60 @@ package lib
 import (
     "os"
     "fmt"
+    "errors"
     containerdlib "github.com/containerd/containerd"
     "github.com/containerd/containerd/oci"
     "github.com/containerd/containerd/cio"
-
-    types "github.com/coditva/bunker/internal/types"
 )
 
-func Run(args *types.Args, reply *string) error {
+type Run struct {
+    args    *Args
+}
+
+func NewRunCommand(rawArgs *[]string) (*Run, error) {
+    args := make(Args)
+    if len(*rawArgs) > 3 {
+        args["command"] = (*rawArgs)[1]
+        args["image"] = (*rawArgs)[2]
+        args["binary"] = (*rawArgs)[3]
+    } else {
+        return nil, errors.New("run: No enough arguments")
+    }
+    return &Run{ args: &args }, nil
+}
+
+func (cmd *Run) Name() string {
+    return "run"
+}
+
+func (cmd *Run) Help() string {
+    return "run [image] [command] [command args]"
+}
+
+func (cmd *Run) Execute() error {
     containerd, err := NewContainerd()
     if err != nil {
         Logger.Error(err)
         return err
     }
 
-    imageName := (*args)[0]
-    runCommand := (*args)[1]
+    imageName := Util.ImageNameToRegistryURL(cmd.args.Value("image"))
+    runCommand := cmd.args.Value("command")
 
     if imageName == "" {
-        *reply = "No image to run from"
-        Logger.Warning(*reply)
+        err = errors.New("No image to run from")
+        Logger.Warning(err)
         return nil
     }
 
     if runCommand == "" {
-        *reply = "No command given to run"
-        Logger.Warning(*reply)
+        err = errors.New("No command given to run")
+        Logger.Warning(err)
         return nil
     }
 
     image, err := containerd.Client.Pull(containerd.Context, imageName, containerdlib.WithPullUnpack)
     if err != nil {
-        Logger.Error(err)
         return err
     }
 
@@ -47,42 +69,39 @@ func Run(args *types.Args, reply *string) error {
         return nil
     }
 
-    os.Mkdir(ContainerStreamBasePath, 0660)
+    //os.Mkdir(ContainerStreamBasePath, 0660)
 
-    containerOut, err := os.OpenFile(fmt.Sprintf("%v%v.out", ContainerStreamBasePath, id),
-            os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
-    if err != nil {
-        Logger.Error(err)
-        return err
-    }
+    //containerOut, err := os.OpenFile(fmt.Sprintf("%v%v.out", ContainerStreamBasePath, id),
+            //os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
+    //if err != nil {
+        //Logger.Error(err)
+        //return err
+    //}
 
-    containerIn, err := os.OpenFile(fmt.Sprintf("%v%v.in", ContainerStreamBasePath, id),
-            os.O_CREATE|os.O_RDONLY|os.O_APPEND, 0660)
-    if err != nil {
-        Logger.Error(err)
-        return err
-    }
+    //containerIn, err := os.OpenFile(fmt.Sprintf("%v%v.in", ContainerStreamBasePath, id),
+            //os.O_CREATE|os.O_RDONLY|os.O_APPEND, 0660)
+    //if err != nil {
+        //Logger.Error(err)
+        //return err
+    //}
 
-    containerErr, err := os.OpenFile(fmt.Sprintf("%v%v.err", ContainerStreamBasePath, id),
-            os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
-    if err != nil {
-        Logger.Error(err)
-        return err
-    }
+    //containerErr, err := os.OpenFile(fmt.Sprintf("%v%v.err", ContainerStreamBasePath, id),
+            //os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0660)
+    //if err != nil {
+        //Logger.Error(err)
+        //return err
+    //}
 
     task, err := container.NewTask(containerd.Context,
-            cio.NewCreator(cio.WithStreams(containerIn, containerOut, containerErr)))
+            cio.NewCreator(cio.WithStreams(os.Stdin, os.Stdout, os.Stderr)))
     if err != nil {
-        *reply = "Could not create new task"
-        Logger.Error(err)
+        return err
     }
     defer task.Delete(containerd.Context)
-    task.Start(containerd.Context)
 
     Logger.Info(fmt.Sprintf("Running command %v on image %v in container ID %v",
             runCommand, imageName, container.ID()))
-
-    *reply = fmt.Sprintf("%v", id)
+    task.Start(containerd.Context)
 
     return nil
 }

@@ -1,41 +1,51 @@
 package lib
 
 import (
-    "fmt"
-
-    types "github.com/coditva/bunker/internal/types"
+    "errors"
 )
 
-func Pull(args *types.Args, reply *string) error {
+type Pull struct {
+    args    *Args
+}
+
+func NewPullCommand(rawArgs *[]string) (*Pull, error) {
+    args := make(Args)
+    if len(*rawArgs) > 2 {
+        args["command"] = (*rawArgs)[1]
+        args["image"] = (*rawArgs)[2]
+    } else {
+        return nil, errors.New("pull: No enough arguments")
+    }
+    return &Pull{ args: &args }, nil
+}
+
+func (cmd *Pull) Name() string {
+    return "pull"
+}
+
+func (cmd *Pull) Help() string {
+    return "pull [image]"
+}
+
+func (cmd *Pull) Execute() error {
+    if cmd.args.Value("image") == "" {
+        err := errors.New("No image name specified")
+        Logger.Warning(err)
+        return err
+    }
+    imageName := Util.ImageNameToRegistryURL(cmd.args.Value("image"))
+
     containerd, err := NewContainerd()
     if err != nil {
         Logger.Error(err)
         return err
     }
 
-    imageName := (*args)[0]
-    if imageName == "" {
-        *reply = "No image specified to pull from registry"
-        Logger.Warning(*reply)
-        return nil
+    image, err := containerd.Client.Pull(containerd.Context, imageName)
+    if err != nil {
+        Logger.Warning(err)
+        return err
     }
-
-    retry := 2
-    for retry > 0 {
-        Logger.Info("Pulling image ", imageName)
-        image, err := containerd.Client.Pull(containerd.Context, imageName)
-        if err != nil {
-            Logger.Warning("Failed to pull image: ", err)
-            imageName = fmt.Sprintf("docker.io/library/%v", imageName)
-            retry -= 1
-        } else {
-            *reply = fmt.Sprintf("Pulled image %v (%v)", imageName, image.Name)
-            Logger.Info(*reply)
-            return nil
-        }
-    }
-
-    *reply = fmt.Sprintf("Could not find image %v to pull", (*args)[0])
-
+    Logger.Info("Pulled image ", image.Name())
     return nil
 }
