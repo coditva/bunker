@@ -13,6 +13,7 @@ pull        Pull new image
 run         Run a command in a new containers for the image
 images      List images
 containers  List containers
+rm          Remove containers
 `
 
 // CLI is the starting point for the bunker cli client. It takes care of
@@ -63,6 +64,13 @@ func (cli *CLI) Execute() error {
 
     case "containers":
         if command, err = NewContainersCommand(&os.Args); err != nil {
+            Logger.Info(err)
+            fmt.Println(err)
+            return nil
+        }
+
+    case "rm":
+        if command, err = NewRmCommand(&os.Args); err != nil {
             Logger.Info(err)
             fmt.Println(err)
             return nil

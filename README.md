@@ -70,6 +70,7 @@ at present the following commands are implemented in `bunker`:
 - `images`: List images pulled from the registry
 - `run`: Create and start a container
 - `containers`: List the containers
+- `rm`: Remove containers
 
 
 ## Debugging
