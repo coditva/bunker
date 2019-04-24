@@ -49,9 +49,9 @@ func (u util) ImageNameToRegistryURL(name string) string {
         name = fmt.Sprintf("%v:latest", name)
     }
 
-    var fullURLRegex = regexp.MustCompile(`docker.io/library/[a-z/.:]*`)
+    var fullURLRegex = regexp.MustCompile(`docker.io/[a-z/.:]*`)
     if fullURLRegex.MatchString(name) == false {
-        name = fmt.Sprintf("docker.io/library/%v", name)
+        name = fmt.Sprintf("docker.io/%v", name)
     }
 
     return name

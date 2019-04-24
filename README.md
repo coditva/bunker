@@ -68,7 +68,7 @@ Docker, but is more minimal than that. The project is in its early stages and
 at present the following commands are implemented in `bunker`:
 - `pull`: Pull an image from the docker registry
 - `images`: List images pulled from the registry
-- `run`: Run a command in a new container
+- `run`: Create and start a container
 - `containers`: List the containers
 
 
