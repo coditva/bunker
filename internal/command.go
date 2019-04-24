@@ -1,4 +1,4 @@
-package lib
+package bunker
 
 type Command interface {
     Name()                  string

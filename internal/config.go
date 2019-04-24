@@ -1,4 +1,4 @@
-package lib
+package bunker
 
 const (
     ContainerdSocketPath = "/run/bunker/bunkerd.sock"
