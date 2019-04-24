@@ -21,7 +21,7 @@ require (
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/sirupsen/logrus v1.4.1 // indirect
 	github.com/syndtr/gocapability v0.0.0-20180916011248-d98352740cb2 // indirect
-	golang.org/x/net v0.0.0-20190415214537-1da14a5a36f2 // indirect
-	golang.org/x/sync v0.0.0-20190412183630-56d357773e84 // indirect
-	google.golang.org/grpc v1.20.0 // indirect
+	golang.org/x/net v0.0.0-20190424024845-afe8014c977f // indirect
+	golang.org/x/sync v0.0.0-20190423024810-112230192c58 // indirect
+	google.golang.org/grpc v1.20.1 // indirect
 )
