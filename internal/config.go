@@ -1,7 +1,5 @@
 package bunker
 
-const (
-    ContainerdSocketPath = "/run/bunker/bunkerd.sock"
-    RPCSocketPath = "/tmp/bunkerrpc.sock"
-    ContainerStreamBasePath = "/run/bunker/streams/"
-)
+// ContainerdSocketPath is the full path of the socket file that is used as the
+// connection to containerd
+const ContainerdSocketPath = "/run/bunker/bunkerd.sock"
