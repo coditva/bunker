@@ -5,10 +5,14 @@ import (
     "errors"
 )
 
+// Images implements Command interface. It list the images pulled from the
+// registry that exist locally.
 type Images struct {
     args    *Args
 }
 
+// NewImagesCommand returns an instance of the command. It takes os arguments
+// and parses them to create the command which can be executed.
 func NewImagesCommand(rawArgs *[]string) (*Images, error) {
     args := make(Args)
     if len(*rawArgs) > 1 {
@@ -19,15 +23,17 @@ func NewImagesCommand(rawArgs *[]string) (*Images, error) {
     return &Images{ args: &args }, nil
 }
 
+// Name returns the name of the command.
 func (cmd *Images) Name() string {
     return "images"
 }
 
+// Help returns the help information about the command.
 func (cmd *Images) Help() string {
     return "images"
 }
 
-
+// Execute runs the command and returns error upon failure.
 func (cmd *Images) Execute() error {
     containerd, err := NewContainerd()
     if err != nil {

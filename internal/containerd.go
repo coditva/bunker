@@ -7,11 +7,18 @@ import (
     "github.com/containerd/containerd/namespaces"
 )
 
+// Containerd is a wrapper over containerd client library. It is takes care of
+// storing a containerd client instance which is used by the CLI.
 type Containerd struct {
+
+    // Client is the initialied containerd client.
     Client  *containerd.Client
+
+    // Context is the containerd context with a separate namespace for bunker.
     Context context.Context
 }
 
+// NewContainerd return a new initialized instance of containerd client
 func NewContainerd() (*Containerd, error) {
     client := new(Containerd)
 
@@ -23,9 +30,10 @@ func NewContainerd() (*Containerd, error) {
         Logger.Info("Connected to containerd as client")
         client.Client = c
     }
-    //defer ContainerdClient.Client.Close()
 
     Logger.Info("Creating containerd client context")
-    client.Context = namespaces.WithNamespace(context.Background(), "bunker")
+    client.Context = namespaces.WithNamespace(context.Background(),
+            ContainerdNamespace)
+
     return client, nil
 }

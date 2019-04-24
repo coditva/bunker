@@ -4,10 +4,14 @@ import (
     "errors"
 )
 
+// Pull implements Command interface. It takes care of pulling and image from
+// the registry.
 type Pull struct {
     args    *Args
 }
 
+// NewPullCommand returns an instance of the command. It takes os arguments and
+// parses them to create the command which can be executed.
 func NewPullCommand(rawArgs *[]string) (*Pull, error) {
     args := make(Args)
     if len(*rawArgs) > 2 {
@@ -19,14 +23,17 @@ func NewPullCommand(rawArgs *[]string) (*Pull, error) {
     return &Pull{ args: &args }, nil
 }
 
+// Name returns the name of the command.
 func (cmd *Pull) Name() string {
     return "pull"
 }
 
+// Help returns the help information about the command.
 func (cmd *Pull) Help() string {
     return "pull [image]"
 }
 
+// Execute runs the command and returns error upon failure.
 func (cmd *Pull) Execute() error {
     if cmd.args.Value("image") == "" {
         err := errors.New("No image name specified")
