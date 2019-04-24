@@ -24,7 +24,6 @@ func NewContainerd() (*Containerd, error) {
 
     Logger.Info("Connecting to containerd")
     if c, err := containerd.New(ContainerdSocketPath); err != nil {
-        Logger.Error(err)
         return nil, err
     } else {
         Logger.Info("Connected to containerd as client")

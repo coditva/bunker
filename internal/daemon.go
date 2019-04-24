@@ -3,9 +3,18 @@ package bunker
 import (
     "os"
     "fmt"
+    "strconv"
     "os/exec"
     "syscall"
+    "io/ioutil"
 )
+
+// DaemonPID is the PID of the running bunkerd daemon.
+var DaemonPID = 0
+
+// DaemonIsRunning is a boolean value true if daemon is running.
+var DaemonIsRunning = false
+
 
 // Daemon is the starting point for the bunkerd daemon. It is responsible for
 // starting a new containerd instance.
@@ -20,6 +29,19 @@ func NewDaemon() *Daemon {
 // Start execution of bunkerd daemon.
 func (daemon *Daemon) Execute() error {
     InitLogger("bunker", "/tmp/bunkerd.log")
+
+    if daemonPID, err := ioutil.ReadFile(ContainerdDaemonPIDFile); err != nil {
+        DaemonIsRunning = false
+        Logger.Info("Daemon is not running")
+    } else {
+        DaemonIsRunning = true
+        if n, err := strconv.Atoi(string(daemonPID)); err == nil {
+            DaemonPID = n
+        } else {
+            Logger.Error(err)
+        }
+        Logger.Info("Daemon is running")
+    }
 
     if len(os.Args) < 2 {
         daemon.Help()
@@ -60,6 +82,11 @@ func (daemon *Daemon) Execute() error {
 
 // Start starts the daemon if not already running.
 func (daemon *Daemon) Start() error {
+    if DaemonIsRunning {
+        fmt.Println("Daemon already running")
+        return nil
+    }
+
     Logger.Info("Starting bunkerd")
 
     // TODO: Check if daemon is already running and abort if it is.
@@ -82,13 +109,32 @@ func (daemon *Daemon) Start() error {
         return err
     } else {
         Logger.Info("Started containerd daemon PID: ", pid)
+        ioutil.WriteFile(ContainerdDaemonPIDFile, []byte(strconv.Itoa(pid)),
+                0660)
+        DaemonIsRunning = true
     }
 
+    fmt.Println("Started daemon")
     return nil
 }
 
 // Stop stops the running daemon.
 func (daemon *Daemon) Stop() error {
+    if DaemonIsRunning == false {
+        fmt.Println("Daemon not running")
+        return nil
+    }
+
+    Logger.Info("Killing daemon")
+    if daemon, err := os.FindProcess(DaemonPID); err != nil {
+        Logger.Error(err)
+    } else {
+        daemon.Kill()
+        DaemonIsRunning = false
+    }
+
+    os.Remove(ContainerdDaemonPIDFile)
+    fmt.Println("Stopped daemon")
     return nil
 }
 
@@ -104,6 +150,11 @@ func (daemon *Daemon) Disable() error {
 
 // Status prints the status of the daemon.
 func (daemon *Daemon) Status() error {
+    if DaemonIsRunning {
+        fmt.Println("Daemon is running")
+    } else {
+        fmt.Println("Daemon is not running")
+    }
     return nil
 }
 

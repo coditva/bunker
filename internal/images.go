@@ -37,7 +37,6 @@ func (cmd *Images) Help() string {
 func (cmd *Images) Execute() error {
     containerd, err := NewContainerd()
     if err != nil {
-        Logger.Error(err)
         return err
     }
 
