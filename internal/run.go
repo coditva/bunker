@@ -9,10 +9,14 @@ import (
     "github.com/containerd/containerd/cio"
 )
 
+// Run implements Command interface. It takes care of running a task in a new
+// or existing container.
 type Run struct {
     args    *Args
 }
 
+// NewRunCommand returns an instance of the command. It takes os arguments and
+// parses them to create the command which can be executed.
 func NewRunCommand(rawArgs *[]string) (*Run, error) {
     args := make(Args)
     if len(*rawArgs) > 3 {
@@ -25,14 +29,17 @@ func NewRunCommand(rawArgs *[]string) (*Run, error) {
     return &Run{ args: &args }, nil
 }
 
+// Name returns the name of the command.
 func (cmd *Run) Name() string {
     return "run"
 }
 
+// Help returns the help information about the command.
 func (cmd *Run) Help() string {
     return "run [image] [command] [command args]"
 }
 
+// Execute runs the command and returns error upon failure.
 func (cmd *Run) Execute() error {
     containerd, err := NewContainerd()
     if err != nil {
