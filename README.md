@@ -1,6 +1,7 @@
 [![Build Status](https://img.shields.io/travis/com/coditva/bunker.svg?logo=travis&style=for-the-badge)](https://travis-ci.com/coditva/bunker)
 [![Libraries.io dependency status](https://img.shields.io/librariesio/github/coditva/bunker.svg?style=for-the-badge)](https://libraries.io/github/coditva/bunker)
 [![Golang version](https://img.shields.io/badge/Golang-1.12-lightgrey.svg?style=for-the-badge)](https://golang.org/project)
+[![GoDoc](https://img.shields.io/badge/GoDoc-Reference-blue.svg?style=for-the-badge)](https://godoc.org/github.com/coditva/bunker/internal)
 [![GitHub issues](https://img.shields.io/github/issues/coditva/bunker.svg?logo=github&style=for-the-badge)](https://github.com/coditva/bunker/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/coditva/bunker.svg?logo=github&style=for-the-badge)](https://github.com/coditva/bunker/pulls)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/coditva/bunker.svg?style=for-the-badge)
