@@ -79,9 +79,6 @@ func (cmd *Run) Execute() error {
     }
     defer task.Delete(containerd.Context)
 
-    task.Exec(containerd.Context, "/bin/bash", nil,
-    cio.NewCreator(cio.WithStreams(os.Stdin, os.Stdout, os.Stderr)))
-
     task.Start(containerd.Context)
 
     return nil
