@@ -3,25 +3,14 @@ module github.com/coditva/bunker
 go 1.12
 
 require (
-	github.com/containerd/containerd v1.2.3
-	github.com/containerd/continuity v0.0.0-20181203112020-004b46473808 // indirect
-	github.com/containerd/cri v1.11.1 // indirect
-	github.com/containerd/fifo v0.0.0-20190226154929-a9fb20d87448 // indirect
-	github.com/containerd/typeurl v0.0.0-20190228175220-2a93cfde8c20 // indirect
-	github.com/docker/distribution v2.7.1+incompatible // indirect
-	github.com/docker/docker v1.13.1 // indirect
-	github.com/docker/go-events v0.0.0-20170721190031-9461782956ad // indirect
-	github.com/gogo/googleapis v1.2.0 // indirect
+	github.com/Microsoft/go-winio v0.5.1 // indirect
+	github.com/Microsoft/hcsshim v0.8.23 // indirect
+	github.com/containerd/containerd v1.5.7
 	github.com/google/logger v1.0.1
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/goombaio/namegenerator v0.0.0-20181006234301-989e774b106e
-	github.com/opencontainers/go-digest v1.0.0-rc1 // indirect
-	github.com/opencontainers/image-spec v1.0.1 // indirect
-	github.com/opencontainers/runc v0.1.1 // indirect
-	github.com/opencontainers/runtime-spec v1.0.1 // indirect
-	github.com/pkg/errors v0.8.1 // indirect
-	github.com/sirupsen/logrus v1.4.1 // indirect
-	github.com/syndtr/gocapability v0.0.0-20180916011248-d98352740cb2 // indirect
-	golang.org/x/net v0.0.0-20190424024845-afe8014c977f // indirect
-	golang.org/x/sync v0.0.0-20190423024810-112230192c58 // indirect
-	google.golang.org/grpc v1.20.1 // indirect
+	github.com/opencontainers/selinux v1.9.1 // indirect
+	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
+	golang.org/x/sys v0.0.0-20210510120138-977fb7262007 // indirect
+	google.golang.org/grpc v1.42.0 // indirect
 )
